@@ -178,8 +178,8 @@ class FikaConstraints():
             summer_year = start.year + 1
             winter_year = start.year
             
-        # add summer for the coming July and August
-        day = date(summer_year, 7, 1)
+        # add summer for the coming midsummer and August
+        day = date(summer_year, 6, 20)
         while day.month < 9:
             if day not in holidays.Sweden():
                 self.fikaholidays.append(day)
