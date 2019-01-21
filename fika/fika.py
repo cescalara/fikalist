@@ -114,9 +114,10 @@ class FikaConstraints():
         """
 
         # allowed constraints
-        self._possible_constraints = ['leaving soon', 'together', 'holiday']
+        self._possible_constraints = ['leaving soon', 'together', 'holiday', 'just arrived']
 
         self.leaving_soon = []
+        self.just_arrived = []
         self.together = []
         #self.fikaholidays = self._define_holidays()
         self.fikafridays = []
@@ -143,6 +144,14 @@ class FikaConstraints():
                 for n in name:
                     self.leaving_soon.append(n)
 
+        if constraint == self._possible_constraints[3]:
+            # is name a string or list?
+            if isinstance(name, str):
+                self.just_arrived.append(name)
+            else:
+                for n in name:
+                    self.just_arrived.append(n)
+                    
         if constraint == self._possible_constraints[1]:
             # require a couple  
             if len(name) != 2:
@@ -282,6 +291,12 @@ class FikaList():
             self.providers.names.remove(name)
             self.providers.names.insert(0, name)
 
+        # Bump up people that have just arrived to the top of the list
+        # This makes it more likely for them to get picked
+        # Separate out from leaving soon in case you want some separate behaviour
+        for name in self.constraints.just_arrived:
+            self.providers.names.remove(name)
+            self.providers.names.insert(0, name)    
         
         # remove exjobbare from list, if they are there
         exjobb = 'Exjobbare'
