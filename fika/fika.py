@@ -299,9 +299,9 @@ class FikaList():
             self.providers.names.insert(0, name)    
         
         # remove exjobbare from list, if they are there
-        exjobb = 'Exjobbare'
-        if exjobb in self.providers.names:
-            self.providers.names.remove(exjobb)
+        #exjobb = 'Exjobbare'
+        #if exjobb in self.providers.names:
+        #    self.providers.names.remove(exjobb)
 
             
     def generate(self):
@@ -361,6 +361,9 @@ class FikaList():
         """
         Select couples from a weighted probability distribution,
         under the given constraints.
+        
+        @TODO: add treatment of Exjobbare as alone or paired based 
+               on group number being even/odd.
         """
 
         # initialise a list of names
@@ -419,7 +422,8 @@ class FikaList():
                 self.providers.couples.append(draws)
 
         # add exjobbare's on the end, as they are always alone
-        self.providers.couples.append(['Exjobbare', KW_NAN])
+        # Remove this for now as odd number of people - should automate
+        #self.providers.couples.append(['Exjobbare', KW_NAN])
 
 
 
