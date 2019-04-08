@@ -164,7 +164,7 @@ class FikaConstraints():
         """
         Get a list of the Fika Fridays.
 
-        If not start date is supplied, the current date
+        If a start date is not supplied, the current date
         is assumed
 
         Holidays are also defined here for now, due to a bug in
@@ -174,18 +174,20 @@ class FikaConstraints():
         :param start_date: the starting date
         """
 
+        if not start_date:
+            # get current date
+            start_date = date.today()
+        
         self.fikaholidays = holidays.Sweden()
 
         # DEFINE HOLIDAYS
-        # get current date
-        start = date.today()
-        month = start.month
+        month = start_date.month
         if month <= 9:
-            summer_year = start.year
-            winter_year = start.year
+            summer_year = start_date.year
+            winter_year = start_date.year
         else:
-            summer_year = start.year + 1
-            winter_year = start.year
+            summer_year = start_date.year + 1
+            winter_year = start_date.year
             
         # add summer for the coming midsummer and August
         day = date(summer_year, 6, 20)
@@ -206,9 +208,6 @@ class FikaConstraints():
         # GET FRIDAYS
         # index of week
         friday_index = 4
-
-        if start_date == None:
-            start_date = date.today()
 
         # Find the next Friday after the start date
         while start_date.weekday() != friday_index:
@@ -304,7 +303,7 @@ class FikaList():
         #    self.providers.names.remove(exjobb)
 
             
-    def generate(self):
+    def generate(self, start_date = None):
         """
         Generate a new fikalist.
         
@@ -325,7 +324,7 @@ class FikaList():
         
         # get fridays and convert to string dates
         N = len(self.providers.couples)
-        self.constraints._get_fridays(N)
+        self.constraints._get_fridays(N, start_date)
         fridays = self.constraints.fikafridays
         fridays_string = np.asarray([d.strftime("%d/%m/%Y") for d in fridays])
         
